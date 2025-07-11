@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>タスク管理リスト</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>タスク管理リスト</h1>
+            <div class="header-controls">
+                <div class="search-section">
+                    <input type="text" id="searchInput" placeholder="タスクを検索...">
+                </div>
+                <div class="filter-section">
+                    <select id="tagFilter">
+                        <option value="">すべてのタグ</option>
+                    </select>
+                </div>
+                <div class="action-buttons">
+                    <button id="addTaskBtn" class="btn btn-primary">タスク追加</button>
+                    <button id="settingsBtn" class="btn btn-secondary">設定</button>
+                    <button id="exportBtn" class="btn btn-secondary">CSV出力</button>
+                    <input type="file" id="importFile" accept=".csv" style="display: none;">
+                    <button id="importBtn" class="btn btn-secondary">CSV読込</button>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="board-container">
+                <div id="boardColumns" class="board-columns">
+                    <div class="column" data-status="未着手">
+                        <div class="column-header">
+                            <h2>未着手</h2>
+                            <span class="task-count">0</span>
+                        </div>
+                        <div class="column-content" data-status="未着手"></div>
+                    </div>
+                    <div class="column" data-status="進行中">
+                        <div class="column-header">
+                            <h2>進行中</h2>
+                            <span class="task-count">0</span>
+                        </div>
+                        <div class="column-content" data-status="進行中"></div>
+                    </div>
+                    <div class="column" data-status="完了">
+                        <div class="column-header">
+                            <h2>完了</h2>
+                            <span class="task-count">0</span>
+                        </div>
+                        <div class="column-content" data-status="完了"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- タスク追加/編集モーダル -->
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">タスク追加</h2>
+                <button class="close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="taskForm">
+                    <div class="form-group">
+                        <label for="taskTitle">タイトル <span class="required">*</span></label>
+                        <input type="text" id="taskTitle" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskDetail">詳細</label>
+                        <textarea id="taskDetail" name="detail" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskDeadline">締切日時</label>
+                        <input type="datetime-local" id="taskDeadline" name="deadline">
+                    </div>
+                    <div class="form-group">
+                        <label for="taskTags">タグ</label>
+                        <input type="text" id="taskTags" name="tags" placeholder="カンマ区切りで入力">
+                    </div>
+                    <div class="form-group">
+                        <label for="taskStatus">進捗ステータス</label>
+                        <select id="taskStatus" name="status">
+                            <option value="未着手">未着手</option>
+                            <option value="進行中">進行中</option>
+                            <option value="完了">完了</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="deleteTaskBtn" class="btn btn-danger" style="display: none;">削除</button>
+                <button type="button" id="cancelBtn" class="btn btn-secondary">キャンセル</button>
+                <button type="submit" id="saveTaskBtn" class="btn btn-primary" form="taskForm">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 設定モーダル -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>設定</h2>
+                <button class="close" id="closeSettingsModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>進捗ステータス</label>
+                    <div id="statusList"></div>
+                    <div class="add-status">
+                        <input type="text" id="newStatusInput" placeholder="新しいステータス">
+                        <button type="button" id="addStatusBtn" class="btn btn-small">追加</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="closeSettingsBtn" class="btn btn-secondary">閉じる</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 確認ダイアログ -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>確認</h2>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="confirmCancel" class="btn btn-secondary">キャンセル</button>
+                <button type="button" id="confirmOk" class="btn btn-primary">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/taskManager.js"></script>
+    <script src="js/dragDrop.js"></script>
+    <script src="js/modalManager.js"></script>
+    <script src="js/dataManager.js"></script>
+    <script src="js/csvManager.js"></script>
+    <script src="js/searchFilter.js"></script>
+    <script src="js/settingsManager.js"></script>
+    <script src="js/uiManager.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
